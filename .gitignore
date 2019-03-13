@@ -1,0 +1,9 @@
+*.autosave
+*.o
+*.out
+*.swp
+*.swo
+*.gdb_history
+*.bak
+tags
+practice
