@@ -1,12 +1,10 @@
-#pragma once
 #include "Student.h"
 
-class Admin{
-	Student stu_list;
-//	Manager mana_list;
+class Main{
+	CStudent m_stu;
 public:
-	Admin();
-	~Admin();
+	Main(){};
+	~Main(){};
 
 	void welcome();
 	int  login();

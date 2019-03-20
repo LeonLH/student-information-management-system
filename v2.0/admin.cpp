@@ -1,4 +1,4 @@
-#include "Admin.h"
+#include "admin.h"
 #include<cstdlib>
 #include<iostream>
 using namespace std;
@@ -11,7 +11,7 @@ Admin::~Admin(){
 
 }
 
-void Admin::welcome(){
+void Admin::Welcome(){
 	cout << "\033[2J\033[1;1H";
 	cout << endl;
 	cout << endl;
@@ -32,11 +32,11 @@ void Admin::welcome(){
 	fgetc(stdin);
 }
 
-int Admin::login(){
+int Admin::Login(){
 	return 0;
 }
 
-int Admin::menu(){
+int Admin::Menu(){
 	cout << "\033[2J\033[1;1H";
 	cout << endl;
 	cout << endl;
@@ -64,19 +64,19 @@ int Admin::menu(){
 
 	switch(i){
 		case 1:
-			stu_list.input();
+			student_list.Input();
 			break;
 		case 2:
-			while(stu_list.browse())
+			while(student_list.Browse())
 				;
 			break;
 		case 3:
-			stu_list.remove();
+			student_list.Remove();
 			break;
 		case 4:
-			stu_list.modify();
+			student_list.Modify();
 		case 5:
-			while(stu_list.search())
+			while(student_list.Search())
 				;
 			break;
 		case 6:
@@ -94,13 +94,13 @@ int Admin::menu(){
 	return 0;
 }
 
-void Admin::run(){
-//	while(!stu_list.login())
+void Admin::Run(){
+//	while(!student_list.login())
 //		;
-	while(menu())
+	while(Menu())
 		;
 }
 
-void Admin::exit(){
-	stu_list.save();
+void Admin::Exit(){
+	student_list.Save();
 }
