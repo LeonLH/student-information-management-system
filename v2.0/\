@@ -9,7 +9,7 @@ struct StudentData{
 	bool  sex; 		// 0 is for Man, 1 for Woman. 
 	bool  type;		// 0 is for Science, 1 for liberal arts.
 
-	StudentData* Input();
+	void Input();
 	void Print();
 
 	float math;
@@ -20,7 +20,7 @@ struct StudentData{
 struct ArtsData:StudentData{
 	float geog;
 	float hist;
-	ArtsData* Input();
+	void Input();
 	void Print();
 };
 
@@ -28,7 +28,7 @@ struct ScienceData:StudentData{
 	float biol;
 	float phys;
 	float chem;
-	ScienceData* Input();
+	void Input();
 	void Print();
 };
 
@@ -37,6 +37,7 @@ typedef int (*funcp)(const StudentData *pStudentData1, const StudentData *pStude
 class StudentList{
 	std::list<StudentData*> student_list;
 private:
+	void ClearScreen();
 
 public:
 	StudentList(void);
@@ -47,7 +48,7 @@ public:
 	void Print(StudentData** p);
 	int BrowseMenu();
 	int  Browse();
-	StudentData* Input();
+	void Input();
 	void RemoveAll();
 	bool IsExist(const int num, StudentData* &p);
 	void Remove();
@@ -66,8 +67,19 @@ public:
 	void SearchByGeog();
 	void SearchByPhys();
 
+
+
 	void Sort(funcp fp);
 	void Sort();
+	static int ByNumb(const StudentData *p1, const StudentData *p2){
+		return p1->numb < p2->numb;
+	}
+	static int ByNumb(const StudentData *p1, const StudentData *p2){
+		return p1->numb < p2->numb;
+	}
+	static int ByNumb(const StudentData *p1, const StudentData *p2){
+		return p1->numb < p2->numb;
+	}
 
 	int Load();
 	int Save();

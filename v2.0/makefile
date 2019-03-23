@@ -7,7 +7,7 @@ enter.o: enter.cpp
 admin.o: admin.cpp admin.h 
 	g++ -g -c admin.cpp -o admin.o
 
-student.o: student-list.cpp student-list.h
+student-list.o: student-list.cpp student-list.h
 	g++ -g -c student-list.cpp -o student-list.o 
 
 clean:
