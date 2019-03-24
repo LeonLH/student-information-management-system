@@ -25,6 +25,10 @@ static int ByType(const StudentData *p1, const StudentData *p2){
 static int ByMath(const StudentData *p1, const StudentData *p2){
 	return p1->math < p2->math;
 }
+// need virtual function support, otherwise it will be complex
+static int ByAverage(const StudentData *p1, const StudentData *p2){
+	return p1->math < p2->math;
+}
 
 
 StudentList::StudentList(){
@@ -304,6 +308,7 @@ int StudentList::BrowseMenu(){
 	cout << "3. Browse by gender:" << endl;
 	cout << "4. Browse by type:" << endl;
 	cout << "5. Browse by math:" << endl;
+	cout << "6. Browse by average:" << endl;
 	cout << "0. Quit!" << endl;
 
 	int i;
@@ -327,6 +332,10 @@ int StudentList::BrowseMenu(){
 			break;
 		case 5:
 			Sort(ByMath);
+			Print();
+			break;
+		case 6:
+			Sort(ByAverage);
 			Print();
 			break;
 	}

@@ -1,7 +1,7 @@
 Number	Name	Gender	Type	Math	Chinese	English	Geog	History	Biology	Physics	Chemics
-1000	Roy	1	1	89	95	94	89	47	0	0	0
 1001	Leon	0	0	89	98	78	0	0	78	69	90
-1005	Charles	1	1	77	85	95	73	84	0	0	0
-1003	Mary	1	1	87	68	57	46	96	0	0	0
 1007	Peter	0	0	99	78	54	0	0	86	97	57
 1021	Linda	1	0	78	98	67	0	0	56	95	84
+1000	Roy	1	1	89	95	94	89	47	0	0	0
+1003	Mary	1	1	87	68	57	46	96	0	0	0
+1005	Charles	1	1	77	85	95	73	84	0	0	0
