@@ -3,32 +3,35 @@
 #include<list>
 #include<string>
 
-struct StudentData{
+// data protected
+class StudentData{
+public:
 	int  numb;
 	std::string name;
 	bool  sex; 		// 0 is for Man, 1 for Woman. 
 	bool  type;		// 0 is for Science, 1 for liberal arts.
 
-	StudentData* Input();
-	void Print();
+	virtual StudentData* Input();
+	virtual void Print();
 
 	float math;
 	float chin;
 	float engl;
 };
 
-struct ArtsData:StudentData{
+class ArtsData: public StudentData{
+public:
 	float geog;
 	float hist;
-	ArtsData* Input();
+	StudentData* Input();
 	void Print();
 };
-
-struct ScienceData:StudentData{
+class ScienceData: public StudentData{
+public:
 	float biol;
 	float phys;
 	float chem;
-	ScienceData* Input();
+	StudentData* Input();
 	void Print();
 };
 

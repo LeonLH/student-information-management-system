@@ -30,14 +30,13 @@ static int ByAverage(const StudentData *p1, const StudentData *p2){
 	return p1->math < p2->math;
 }
 
-
-StudentList::StudentList(){
-	Load();
-}
-
-StudentList::~StudentList(){
-	Save();
-}
+//ArtsData::~ArtsData(){
+//
+//}
+//
+//ScienceData::~ScienceData(){
+//
+//}
 
 void StudentData::Print(){
 	string type, gender;
@@ -64,6 +63,87 @@ void ScienceData::Print(){
 void ArtsData::Print(){
 	StudentData::Print();
 	cout << this->geog << "\t" << this->hist << "\t \t \t" << endl;
+}
+
+StudentData* StudentData::Input(){
+	return nullptr;
+}
+
+StudentData* ArtsData::Input(){
+	ArtsData* p = new ArtsData;
+	p->type = 1;
+	cout << "Please enter your Number, Name, Gender, Math, "\
+		<< "Chinese, English, Geograph, History: "<< endl;
+	cin >> p->numb >> p->name >> p->sex  >> p->math  \
+		>> p->chin >> p->engl >> p->geog >> p->hist; 
+	return p;
+}
+
+StudentData* ScienceData::Input(){
+	ScienceData* p = new ScienceData;
+	p->type = 0;
+	cout << "Please enter your Number, Name, Gender, Math, "\
+		<< "Chinese, English, Biology, Physics and Chemics: "\
+		<< endl;
+	cin >> p->numb >> p->name >> p->sex  >> p->math  \
+		>> p->chin >> p->engl >> p->biol >> p->phys  \
+		>> p->chem;
+	return p;
+}
+
+StudentData* StudentList::Input(){
+	cout << "Please type your type(0 for science, 1 for arts)?";
+	bool btype;
+	cin >> btype;
+	StudentData* pres = nullptr;
+	if(btype == 0){
+		ScienceData* p = new ScienceData;
+		pres = p;
+		student_list.push_back(pres->Input());
+	}
+	else{
+		ArtsData* p = new ArtsData;
+		pres = p;
+		student_list.push_back(pres->Input());
+	}
+	return pres;
+}
+
+// StudentData* StudentList::Input(){
+// 	cout << "Please type your type(0 for science, 1 for arts)? ";
+// 	bool btype;
+// 	cin >> btype;
+// 	StudentData* pres = nullptr;
+// 	if(btype == 0){
+// 		ScienceData* p = new ScienceData;
+// 		p->type = 0;
+// 		cout << "Please enter your Number, Name, Gender, Math, "\
+// 			<< "Chinese, English, Biology, Physics and Chemics: "\
+// 			<< endl;
+// 		cin >> p->numb >> p->name >> p->sex  >> p->math  \
+// 			>> p->chin >> p->engl >> p->biol >> p->phys  \
+// 			>> p->chem;
+// 		student_list.push_back(p);
+// 		pres = p;
+// 	}
+// 	else{
+// 		ArtsData* p = new ArtsData;
+// 		p->type = 1;
+// 		cout << "Please enter your Number, Name, Gender, Math, "\
+// 			<< "Chinese, English, Geograph, History: "<< endl;
+// 		cin >> p->numb >> p->name >> p->sex  >> p->math  \
+// 			>> p->chin >> p->engl >> p->geog >> p->hist; 
+// 		student_list.push_back(p);
+// 		pres = p;
+// 	}
+// 	return pres;
+// }
+StudentList::StudentList(){
+	Load();
+}
+
+StudentList::~StudentList(){
+	Save();
 }
 
 void StudentList::Print(){
@@ -249,57 +329,6 @@ Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 	return 0;
 }
 
-ArtsData* ArtsData::Input(){
-	ArtsData* p = new ArtsData;
-	p->type = 1;
-	cout << "Please enter your Number, Name, Gender, Math, "\
-		<< "Chinese, English, Geograph, History: "<< endl;
-	cin >> p->numb >> p->name >> p->sex  >> p->math  \
-		>> p->chin >> p->engl >> p->geog >> p->hist; 
-	return p;
-}
-
-ScienceData* ScienceData::Input(){
-	ScienceData* p = new ScienceData;
-	p->type = 0;
-	cout << "Please enter your Number, Name, Gender, Math, "\
-		<< "Chinese, English, Biology, Physics and Chemics: "\
-		<< endl;
-	cin >> p->numb >> p->name >> p->sex  >> p->math  \
-		>> p->chin >> p->engl >> p->biol >> p->phys  \
-		>> p->chem;
-	return p;
-}
-
-StudentData* StudentList::Input(){
-	cout << "Please type your type(0 for science, 1 for arts)? ";
-	bool btype;
-	cin >> btype;
-	StudentData* pres = nullptr;
-	if(btype == 0){
-		ScienceData* p = new ScienceData;
-		p->type = 0;
-		cout << "Please enter your Number, Name, Gender, Math, "\
-			<< "Chinese, English, Biology, Physics and Chemics: "\
-			<< endl;
-		cin >> p->numb >> p->name >> p->sex  >> p->math  \
-			>> p->chin >> p->engl >> p->biol >> p->phys  \
-			>> p->chem;
-		student_list.push_back(p);
-		pres = p;
-	}
-	else{
-		ArtsData* p = new ArtsData;
-		p->type = 1;
-		cout << "Please enter your Number, Name, Gender, Math, "\
-			<< "Chinese, English, Geograph, History: "<< endl;
-		cin >> p->numb >> p->name >> p->sex  >> p->math  \
-			>> p->chin >> p->engl >> p->geog >> p->hist; 
-		student_list.push_back(p);
-		pres = p;
-	}
-	return pres;
-}
 
 
 int StudentList::BrowseMenu(){
@@ -376,7 +405,7 @@ void StudentList::Remove(){
 			else
 				*it = (ArtsData*)(*it);
 
-			delete *it;
+//			delete *it;						// TBD
 			student_list.erase(it);
 			break;
 		}
@@ -403,38 +432,38 @@ void StudentList::Modify(){
 	int type;
 	cin >> type;
 	StudentData* pnew = nullptr;
-	if(type)
-		pnew = ((ArtsData*)pnew)->Input();
-	else
-		pnew = ((ScienceData*)pnew)->Input();
+//	if(type)
+//		pnew = ((ArtsData*)pnew)->Input();
+//	else
+//		pnew = ((ScienceData*)pnew)->Input();
+//
+//	cout << "Are you sure? Replace:" << endl;
+//	if(pold->type)
+//		((ArtsData*)pold)->Print();
+//	else
+//		((ScienceData*)pold)->Print();
+//	
+//	cout << "To: " << endl;
+//	if(pnew->type)
+//		((ArtsData*)pnew)->Print();
+//	else
+//		((ScienceData*)pnew)->Print();
+//	bool confirm;
+//	cin >> confirm;
+//	
+//	if(confirm){
+//		list<StudentData*>::iterator it = student_list.begin();
+//		while(it != student_list.end()){
+//			if((*it)->numb == num)
+//				*it = pnew;
+//			++it;
+//		}
+//	}
 
-	cout << "Are you sure? Replace:" << endl;
-	if(pold->type)
-		((ArtsData*)pold)->Print();
-	else
-		((ScienceData*)pold)->Print();
-	
-	cout << "To: " << endl;
-	if(pnew->type)
-		((ArtsData*)pnew)->Print();
-	else
-		((ScienceData*)pnew)->Print();
-	bool confirm;
-	cin >> confirm;
-	
-	if(confirm){
-		list<StudentData*>::iterator it = student_list.begin();
-		while(it != student_list.end()){
-			if((*it)->numb == num)
-				*it = pnew;
-			++it;
-		}
-	}
-
-	if(pold->type)
-		delete ((ArtsData*)pold);
-	else
-		delete ((ScienceData*)pold);
+//	if(pold->type)							// TBD
+//		delete ((ArtsData*)pold);
+//	else
+//		delete ((ScienceData*)pold);
 
 }
 
