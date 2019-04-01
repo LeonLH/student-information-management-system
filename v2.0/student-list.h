@@ -13,6 +13,7 @@ public:
 
 	virtual StudentData* Input();
 	virtual void Print();
+	virtual float AverageScore() const;
 
 	float math;
 	float chin;
@@ -24,7 +25,9 @@ public:
 	float geog;
 	float hist;
 	StudentData* Input();
+	StudentData* InputA();
 	void Print();
+	float AverageScore() const;
 };
 class ScienceData: public StudentData{
 public:
@@ -33,6 +36,7 @@ public:
 	float chem;
 	StudentData* Input();
 	void Print();
+	float AverageScore() const;
 };
 
 typedef int (*funcp)(const StudentData *pStudentData1, const StudentData *pStudentData2);
@@ -53,6 +57,8 @@ public:
 	StudentData* Input();
 	void RemoveAll();
 	bool IsExist(const int num, StudentData* &p);
+
+	bool Remove(int num);
 	void Remove();
 	void Modify();
 
@@ -60,11 +66,13 @@ public:
 	int TestMenu();
 
 	void Welcome();
+	int SearchMenu();
 	int  Search ();
 	void SearchByName();
 	void SearchByGend();
 	void SearchByType();
 	void SearchByNumb();
+	void SearchByMath();
 	void SearchByEngl();
 	void SearchByGeog();
 	void SearchByPhys();

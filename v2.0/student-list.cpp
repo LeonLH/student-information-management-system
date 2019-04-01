@@ -27,7 +27,7 @@ static int ByMath(const StudentData *p1, const StudentData *p2){
 }
 // need virtual function support, otherwise it will be complex
 static int ByAverage(const StudentData *p1, const StudentData *p2){
-	return p1->math < p2->math;
+	return p1->AverageScore() < p2->AverageScore();
 }
 
 //ArtsData::~ArtsData(){
@@ -65,30 +65,45 @@ void ArtsData::Print(){
 	cout << this->geog << "\t" << this->hist << "\t \t \t" << endl;
 }
 
+float StudentData::AverageScore() const{
+	return 0;
+}
+
+float ArtsData::AverageScore() const{
+	float res = 0;
+	res = chin + engl + math + hist + geog;
+	return res/5;
+}
+
+float ScienceData::AverageScore() const{
+	float res = 0;
+	res = chin + engl + math;
+	res += biol + chem + phys;
+	return res/6;
+}
+
 StudentData* StudentData::Input(){
 	return nullptr;
 }
 
 StudentData* ArtsData::Input(){
-	ArtsData* p = new ArtsData;
-	p->type = 1;
+	this->type = 1;
 	cout << "Please enter your Number, Name, Gender, Math, "\
 		<< "Chinese, English, Geograph, History: "<< endl;
-	cin >> p->numb >> p->name >> p->sex  >> p->math  \
-		>> p->chin >> p->engl >> p->geog >> p->hist; 
-	return p;
+	cin >> this->numb >> this->name >> this->sex  >> this->math  \
+		>> this->chin >> this->engl >> this->geog >> this->hist; 
+	return this;
 }
 
 StudentData* ScienceData::Input(){
-	ScienceData* p = new ScienceData;
-	p->type = 0;
+	this->type = 0;
 	cout << "Please enter your Number, Name, Gender, Math, "\
 		<< "Chinese, English, Biology, Physics and Chemics: "\
 		<< endl;
-	cin >> p->numb >> p->name >> p->sex  >> p->math  \
-		>> p->chin >> p->engl >> p->biol >> p->phys  \
-		>> p->chem;
-	return p;
+	cin >> this->numb >> this->name >> this->sex  >> this->math  \
+		>> this->chin >> this->engl >> this->biol >> this->phys  \
+		>> this->chem;
+	return this;
 }
 
 StudentData* StudentList::Input(){
@@ -98,46 +113,20 @@ StudentData* StudentList::Input(){
 	StudentData* pres = nullptr;
 	if(btype == 0){
 		ScienceData* p = new ScienceData;
-		pres = p;
-		student_list.push_back(pres->Input());
+		pres = p->Input();
 	}
 	else{
 		ArtsData* p = new ArtsData;
-		pres = p;
-		student_list.push_back(pres->Input());
+		pres = p->Input();
 	}
+	StudentData* useless;
+	if(IsExist(pres->numb, useless))
+		cout << "The number is exist, Please try again: " << endl;
+	else
+		student_list.push_back(pres);
 	return pres;
 }
 
-// StudentData* StudentList::Input(){
-// 	cout << "Please type your type(0 for science, 1 for arts)? ";
-// 	bool btype;
-// 	cin >> btype;
-// 	StudentData* pres = nullptr;
-// 	if(btype == 0){
-// 		ScienceData* p = new ScienceData;
-// 		p->type = 0;
-// 		cout << "Please enter your Number, Name, Gender, Math, "\
-// 			<< "Chinese, English, Biology, Physics and Chemics: "\
-// 			<< endl;
-// 		cin >> p->numb >> p->name >> p->sex  >> p->math  \
-// 			>> p->chin >> p->engl >> p->biol >> p->phys  \
-// 			>> p->chem;
-// 		student_list.push_back(p);
-// 		pres = p;
-// 	}
-// 	else{
-// 		ArtsData* p = new ArtsData;
-// 		p->type = 1;
-// 		cout << "Please enter your Number, Name, Gender, Math, "\
-// 			<< "Chinese, English, Geograph, History: "<< endl;
-// 		cin >> p->numb >> p->name >> p->sex  >> p->math  \
-// 			>> p->chin >> p->engl >> p->geog >> p->hist; 
-// 		student_list.push_back(p);
-// 		pres = p;
-// 	}
-// 	return pres;
-// }
 StudentList::StudentList(){
 	Load();
 }
@@ -152,42 +141,35 @@ void StudentList::Print(){
 Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 	std::list<StudentData*>::iterator it = student_list.begin();
 	for(; it != student_list.end(); it++){
-		StudentData* p = *it;
-		if(p->type == 0){
-			ScienceData* p0 = (ScienceData*)p;
-			p0->Print();
-		}
-		else{
-			ArtsData* p1 = (ArtsData*)p;
-			p1->Print();
-		}
+		(*it)->Print();
 	}
 	cout << "Press any key to continue:" << endl;
 	cin.ignore();
 	cin.get();
 
 }
+
 void StudentList::Test(){
 	while(TestMenu())
 		;
 }
 int StudentList::TestMenu(){
-	cout << "Test print, \t\ttype 1" << endl;
-	cout << "Test browse, \t\ttype 2" << endl;
-	cout << "Test input, \t\ttype 3" << endl;
-	cout << "Test remove, \t\ttype 4" << endl;
-	cout << "Test modify, \t\ttype 5" << endl;
+	cout << "Test print, \t\ttype 1" << endl;	// done
+	cout << "Test browse, \t\ttype 2" << endl;	// done
+	cout << "Test input, \t\ttype 3" << endl;	// done
+	cout << "Test remove, \t\ttype 4" << endl;	// done
+	cout << "Test modify, \t\ttype 5" << endl;	// done
 	cout << "Test searchByName, \ttype 6" << endl;
 	cout << "Test search, \t\ttype 7" << endl;
 	cout << "Test byNumb, \t\ttype 8" << endl;
-	cout << "Test sort, \t\ttype 9" << endl;
+	cout << "Test sort, \t\ttype 9" << endl;	// done
 	cout << "Test freeRAM, \t\ttype 10" << endl;
 	cout << "Test removeAll, \ttype 11" << endl;
-	cout << "Test load, \t\ttype 12" << endl;
-	cout << "Test save, \t\ttype 13" << endl;
+	cout << "Test load, \t\ttype 12" << endl;	// done
+	cout << "Test save, \t\ttype 13" << endl;	// done
 	cout << "Test constructor, \ttype 14" << endl;
 	cout << "Test deconstructor, \ttype 15" << endl;
-	cout << "Test isExist, \t\ttype 16" << endl;
+	cout << "Test isExist, \t\ttype 16" << endl;	// done
 	cout << "QUIT, \t\t\ttype 0" << endl;
 
 	int i;
@@ -209,7 +191,7 @@ int StudentList::TestMenu(){
 			Modify();
 			break;
 		case 6:
-			//SearchByName();
+			SearchByName();
 			break;
 		case 7:
 			Search();
@@ -378,6 +360,17 @@ int StudentList::Browse(){
 	return 0;
 }
 
+bool StudentList::IsExist(const int num){
+	list<StudentData*>::iterator it = student_list.begin();
+	while(it != student_list.end()){
+		if(num == (*it)->numb){
+			return true;
+		}
+		it++;
+	}
+	return false;
+}
+
 bool StudentList::IsExist(const int num, StudentData* &p){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
@@ -390,13 +383,7 @@ bool StudentList::IsExist(const int num, StudentData* &p){
 	p = nullptr;
 	return false;
 }
-void StudentList::Remove(){
-	Print();
-	cout << "Please enter the number of student you want to remove: "\
-	   	<< endl;
-	int num;
-	cin >> num;
-
+bool StudentList::Remove(int num){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		if(num == (*it)->numb){
@@ -407,73 +394,131 @@ void StudentList::Remove(){
 
 //			delete *it;						// TBD
 			student_list.erase(it);
-			break;
+
+			return true;
 		}
 		it++;
 	}
-	Print();
-	if(it == student_list.end())
-		cout << "The number " << num << " doesn't exist." << endl;
+	return false;
+
 }
 
-// to be done with implementation of polymorphism in next version.
+void StudentList::Remove(){
+	Print();
+	cout << "Please enter the number of student you want to remove: "\
+	   	<< endl;
+	int num;
+	cin >> num;
+	bool if_remove = Remove(num);
+	if(!if_remove)
+		cout << "The number " << num << " doesn't exist." << endl;
+	Print();
+}
+
 void StudentList::Modify(){
+	Print();
 	cout << "Please enter the student number you want to modify:"\
 	<< endl;
 	int num;
 	cin >> num;
 	StudentData* pold = nullptr;
 	while(!IsExist(num, pold)){
-		cout << "Doesn't exists, Please enter another number: "<<endl;
+		Print();
+		cout << "Doesn't exists, Please enter another number";
+		cout << "[0 to exit]: "<< endl;
 		cin >> num;
+		if(!num)
+			return;
 	}
 	
 	cout << "Please enter the new type of student: " << endl;
 	int type;
 	cin >> type;
 	StudentData* pnew = nullptr;
-//	if(type)
-//		pnew = ((ArtsData*)pnew)->Input();
-//	else
-//		pnew = ((ScienceData*)pnew)->Input();
-//
-//	cout << "Are you sure? Replace:" << endl;
-//	if(pold->type)
-//		((ArtsData*)pold)->Print();
-//	else
-//		((ScienceData*)pold)->Print();
-//	
-//	cout << "To: " << endl;
-//	if(pnew->type)
-//		((ArtsData*)pnew)->Print();
-//	else
-//		((ScienceData*)pnew)->Print();
-//	bool confirm;
-//	cin >> confirm;
-//	
-//	if(confirm){
-//		list<StudentData*>::iterator it = student_list.begin();
-//		while(it != student_list.end()){
-//			if((*it)->numb == num)
-//				*it = pnew;
-//			++it;
-//		}
-//	}
+	if(type){
+		ArtsData* p = new ArtsData;
+		pnew = p->Input();
+	}
+	else{
+		ScienceData* p = new ScienceData;
+		pnew = p->Input();
+	}
+	if(IsExist(pnew->numb)){
+		cout << "The new number is already exist, please ";
+		cout << "try another number" << endl;
+		return ;
+	}
 
-//	if(pold->type)							// TBD
-//		delete ((ArtsData*)pold);
-//	else
-//		delete ((ScienceData*)pold);
+	cout << "Modify:" << endl;
+	pold->Print();
+	cout << "To:" << endl;
+	pnew->Print();
+	cout << "Y/N?" << endl;
+
+	char confirm;
+	cin >> confirm;
+	if(confirm == 'y' | confirm == 'Y'){
+		Remove(pold->numb);
+		student_list.push_back(pnew);
+	}
+	Print();
+}
+
+void StudentList::SearchByName(){
+	cout << ""
+}
+
+void StudentList::SearchByNumb(){
 
 }
 
-// search by name/number/gender
-int StudentList::Search(){
-	
+void StudentList::SearchByGend(){
+
+}
+
+void StudentList::SearchByType(){
+
+}
+
+void StudentList::SearchByMath(){
+
+
+}
+
+// search by name/number/gender/range_of_score
+int StudentList::SearchMenu(){
+	ClearScreen();
+	cout << "1. Search by Name:" << endl;
+	cout << "2. Search by Number:" << endl;
+	cout << "3. Search by Gender:" << endl;
+	cout << "4. Search by Type:" << endl;
+	cout << "5. Search by Math Score:" << endl;
+	cout << "0. Quit!" << endl;
+
+	int i;
+	cin >> i;
+	switch(i){
+		case 1:
+			SearchByName();
+		case 2:
+			SearchByNumb();
+		case 3:
+			SearchByGend();
+		case 4:
+			SearchByType();
+		case 5:
+			SearchByMath();
+		case 0:
+			break;
+	}
+	return i;
+}
+
+int StudentList::Search(){		//Search menu
+	SearchMenu();
 	return 0;
 }
 
-// sort by name/number/average-score by using function pointer
 void StudentList::Sort(funcp fp){
 	list<StudentData*>::iterator i = student_list.begin();
 	while(i != student_list.end()){
