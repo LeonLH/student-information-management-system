@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ADMIN_H
+#define ADMIN_H
+
 #include "student-list.h"
 
 class Admin{
@@ -16,3 +18,5 @@ public:
 	void Exit();
 
 };
+
+#endif
