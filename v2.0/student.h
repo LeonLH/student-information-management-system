@@ -26,7 +26,6 @@ public:
 	float geog;
 	float hist;
 	StudentData* Input();
-	StudentData* InputA();
 	void Print();
 	float AverageScore() const;
 	~ArtsData(){};

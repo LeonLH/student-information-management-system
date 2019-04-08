@@ -10,10 +10,13 @@
 typedef int (*funcp)(const StudentData *pStudentData1, const StudentData *pStudentData2);
 
 class Teacher{
+private:
+	float salary;
+	int subject;
+
 public:
 	Teacher(void);
 	~Teacher(void);
-	void Test();
 
 private:
 	std::list<StudentData*> student_list;
@@ -34,6 +37,7 @@ public:
 	void RemoveStudent();
 	void ModifyStudent();
 
+	void Test();
 	int TestMenu();
 	void Welcome();
 

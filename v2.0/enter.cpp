@@ -1,7 +1,7 @@
 #include<iostream>
 #include"admin.h"
 #include"teacher.h"
-#include"manager-list.h"
+#include"manager.h"
 
 void normalRun(){
 	Admin admin;
@@ -11,8 +11,8 @@ void normalRun(){
 }
 
 void TestForStudent(){
-	Teacher student;
-	student.Test();
+	Teacher teacher;
+	teacher.Test();
 
 }
 
@@ -27,7 +27,7 @@ void TestAdmin(){
 
 int main(){
 	//normalRun();
-	TestForStudent();
-	//TestForManager();
+	//TestForStudent();
+	TestForManager();
 	return 0;
 }
