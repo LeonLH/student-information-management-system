@@ -388,6 +388,7 @@ void StudentList::RemoveAll(){
 		delete *it;
 		it++;
 	}
+	student_list.clear();
 }
 
 bool StudentList::Remove(int num){

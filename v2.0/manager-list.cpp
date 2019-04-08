@@ -89,7 +89,7 @@ ManagerList::ManagerList(){
 
 ManagerList::~ManagerList(){
 	Save();
-	//RemoveAll();
+	RemoveAll();
 }
 
 void ManagerList::Load(){
@@ -198,6 +198,31 @@ void ManagerList::Logout(){
 	current_manager = nullptr;
 }
 
+bool ManagerList::RemoveAllHelper(){
+	list<ManagerData*>::iterator it = manager_list.begin();
+	while(it != manager_list.end()){
+		delete *it;
+		it++;
+	}
+	manager_list.clear();
+	return true;
+}
+
+void ManagerList::RemoveAll(){
+	Print();
+	cout << "Really remove all of the managers data[Y/N]?" << endl;
+	char confirm;
+	bool success = false;
+	cin >> confirm;
+	if(confirm == 'y' || confirm == 'Y'){
+		success = RemoveAllHelper();
+	}
+	if(success)
+		cout << "Done! You have removed all the managers data."<<endl;
+	else
+		cout << "Remove is fail!" << endl;
+
+}
 bool ManagerList::RemoveHelper(){
 	cout << "Please enter the number of manager you want to delete: ";
 	int num;
@@ -276,48 +301,21 @@ void ManagerList::Modify(){
 void ManagerList::SortByName(){
 	list<ManagerData*>::iterator i = manager_list.begin();
 	list<ManagerData*>::iterator j, pj;	// pj is previous of j
+	if(manager_list.size() <= 1) 
+		return;
 	i++;
 	while(i != manager_list.end()){
-		//
-		ManagerData* tmp = *i;
-		j = --i;
+		// Insertion Sort
+		j = i;
+		pj = --i;
 		++i;
 
-		while(j != manager_list.begin() && (*j)->numb > (*i)->numb){
-			*i = *j;
+		while(j != manager_list.begin() && (*j)->numb < (*pj)->numb){
+			*j = *pj;
 			--j;
-			--i;
+			--pj;
 		}
-		*i = tmp;
-
-
-
-
-
-
-
-
-
-
-		pj = --j;
-		++j;
-
-		while((*j)->numb < (*pj)->numb){
- 			if(j == manager_list.begin())
-				break;
-			swap(*j, *pj);
-			j--;
-			pj--;
-		}
-	
-	//	BubbleSort
-	//	while(j != manager_list.begin()){
- 	//		if((*j)->name < (*pj)->name)
-	//			swap(*j, *pj);
-	//		j--;
-	//		pj--;
-	//	}
-		
+		*j = *i;
 		i++;
 	}
 }
@@ -342,15 +340,14 @@ int ManagerList::TestMenu(){
 	cout << "Test logout, \t\ttype 4" << endl;			// done
 	cout << "Test remove by super, \ttype 5" << endl;	// done 
 	cout << "Test modify, \t\ttype 6" << endl;			// done 
+	cout << "Test sort, \t\ttype 7" << endl;			// done
+	cout << "Test removeAll, \ttype 8" << endl;			// done
 
-	cout << "Test sort, \t\ttype 7" << endl;			// 
-	cout << "Test removeAll, \ttype 7" << endl;			// 
+	cout << "Test load, \t\ttype 9" << endl;			// done
+	cout << "Test save, \t\ttype 10" << endl;			// done
 
-	cout << "Test load, \t\ttype 8" << endl;			// done
-	cout << "Test save, \t\ttype 9" << endl;			// done
-
-	cout << "Test constructor, \ttype 10" << endl;		// 
-	cout << "Test deconstructor, \ttype 11" << endl;	// 
+	cout << "Test constructor, \ttype 11" << endl;		// done
+	cout << "Test deconstructor, \ttype 11" << endl;	// done
 	cout << "Test isExist, \t\ttype 12" << endl;		// done
 	cout << "Test change password, \ttype 12" << endl;	// 
 	cout << "QUIT, \t\t\ttype 0" << endl;
@@ -378,22 +375,23 @@ int ManagerList::TestMenu(){
 			break;
 		case 7:
 			Sort();
-			//RemoveAll();
 			break;
 		case 8:
-			Load();
+			RemoveAll();
 			break;
 		case 9:
-			Save();
+			Load();
 			break;
 		case 10:
-			ManagerList();
+			Save();
 			break;
 		case 11:
-	//		~ManagerList();
+			ManagerList();
+			//~ManagerList();
 			break;
 		case 12:
 			//IsExist();
+			//ChangePassword();
 			break;
 		case 0:
 			break;

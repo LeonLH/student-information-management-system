@@ -43,6 +43,7 @@ private:
 
 	void SortByName();
 	void Sort();
+	bool RemoveAllHelper();
 	void RemoveAll();
 	//ManagerData* IsExist(const int num);
 	std::list<ManagerData*>::iterator IsExist(const int num);

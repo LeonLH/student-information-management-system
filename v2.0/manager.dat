@@ -1,8 +1,8 @@
 Number	Name	Gender	PRI	Passwd
+9005	Smith	0	1	IamSmith
 9006	Auld	0	2	IamAuld
-9013	Bobo	1	2	IamBobo
-9011	Kim	0	1	IamKim
 9006	Leon	0	0	IamLeon
 9008	Lora	1	1	IamLora
 9009	Obama	0	2	IamObama
-9005	Smith	0	1	IamSmith
+9011	Kim	0	1	IamKim
+9013	Bobo	1	2	IamBobo
