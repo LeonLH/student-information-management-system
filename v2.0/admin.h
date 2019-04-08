@@ -1,10 +1,10 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include "student-list.h"
+#include "teacher.h"
 
 class Admin{
-	StudentList student_list;
+	Teacher student_list;
 //	Manager mana_list;
 public:
 	Admin();

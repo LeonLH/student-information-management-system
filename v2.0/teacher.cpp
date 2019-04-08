@@ -1,4 +1,4 @@
-#include"student-list.h"
+#include"teacher.h"
 #include<list>
 #include <stdio.h>
 #include<iostream>
@@ -30,77 +30,7 @@ static int ByAverage(const StudentData *p1, const StudentData *p2){
 	return p1->AverageScore() < p2->AverageScore();
 }
 
-void StudentData::Print(){
-	string type, gender;
-	if(this->type == 0)
-		type = "Scie";
-	else
-		type = "Arts";
-
-	if(this->sex == 0)
-		gender = "Boy";
-	else
-		gender = "Girl";
-
-	cout << this->numb << "\t" << this->name << "\t" << gender << \
-"\t" << type << "\t" << this->math << "\t" << this->chin << \
-"\t" << this->engl << "\t";
-
-}
-void ScienceData::Print(){
-	StudentData::Print();
-	cout << " \t \t" << this->biol << "\t" << this->phys << \
-"\t" << this->chem << endl;
-}
-void ArtsData::Print(){
-	StudentData::Print();
-	cout << this->geog << "\t" << this->hist << "\t \t \t" << endl;
-}
-
-
-
-float StudentData::AverageScore() const{
-	return 0;
-}
-
-float ArtsData::AverageScore() const{
-	float res = 0;
-	res = chin + engl + math + hist + geog;
-	return res/5;
-}
-
-float ScienceData::AverageScore() const{
-	float res = 0;
-	res = chin + engl + math;
-	res += biol + chem + phys;
-	return res/6;
-}
-
-StudentData* StudentData::Input(){
-	return nullptr;
-}
-
-StudentData* ArtsData::Input(){
-	this->type = 1;
-	cout << "Please enter your Number, Name, Gender, Math, "\
-		<< "Chinese, English, Geograph, History: "<< endl;
-	cin >> this->numb >> this->name >> this->sex  >> this->math  \
-		>> this->chin >> this->engl >> this->geog >> this->hist; 
-	return this;
-}
-
-StudentData* ScienceData::Input(){
-	this->type = 0;
-	cout << "Please enter your Number, Name, Gender, Math, "\
-		<< "Chinese, English, Biology, Physics and Chemics: "\
-		<< endl;
-	cin >> this->numb >> this->name >> this->sex  >> this->math  \
-		>> this->chin >> this->engl >> this->biol >> this->phys  \
-		>> this->chem;
-	return this;
-}
-
-StudentData* StudentList::Input(){
+StudentData* Teacher::InputStudent(){
 	cout << "Please type your type(0 for science, 1 for arts)?";
 	bool btype;
 	cin >> btype;
@@ -114,29 +44,29 @@ StudentData* StudentList::Input(){
 		pres = p->Input();
 	}
 	StudentData* useless;
-	if(IsExist(pres->numb, useless))
+	if(IsStudentExist(pres->numb, useless))
 		cout << "The number is exist, Please try again: " << endl;
 	else
 		student_list.push_back(pres);
 	return pres;
 }
 
-StudentList::StudentList(){
-	Load();
+Teacher::Teacher(){
+	LoadStudent();
 }
 
-StudentList::~StudentList(){
-	Save();
-	RemoveAll();
+Teacher::~Teacher(){
+	SaveStudent();
+	RemoveAllStudent();
 }
 
-void StudentList::PrintTitle(){
+void Teacher::PrintStudentTitle(){
 	cout << "Number\tName\tGender\tType\tMath\tChinese\tEnglish\t\
 Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 }
-void StudentList::Print(){
+void Teacher::PrintStudent(){
 	ClearScreen();
-	PrintTitle();
+	PrintStudentTitle();
 	std::list<StudentData*>::iterator it = student_list.begin();
 	for(; it != student_list.end(); it++){
 		(*it)->Print();
@@ -147,13 +77,13 @@ void StudentList::Print(){
 
 }
 
-void StudentList::Test(){
+void Teacher::Test(){
 	while(TestMenu())
 		;
 }
-int StudentList::TestMenu(){
+int Teacher::TestMenu(){
 	cout << "Test print, \t\ttype 1" << endl;		// done
-	cout << "Test browse, \t\ttype 2" << endl;		// done
+	cout << "Test Browse, \t\ttype 2" << endl;		// done
 	cout << "Test input, \t\ttype 3" << endl;		// done
 	cout << "Test remove, \t\ttype 4" << endl;		// done
 	cout << "Test modify, \t\ttype 5" << endl;		// done
@@ -174,31 +104,31 @@ int StudentList::TestMenu(){
 	cin >> i;
 	switch(i){
 		case 1:
-			Print();
+			PrintStudent();
 			break;
 		case 2:
-			Browse();
+			BrowseStudent();
 			break;
 		case 3:
-			Input();
+			InputStudent();
 			break;
 		case 4:
-			Remove();
+			RemoveStudent();
 			break;
 		case 5:
-			Modify();
+			ModifyStudent();
 			break;
 		case 6:
-			SearchByName();
+			SearchStudentByName();
 			break;
 		case 7:
-			Search();
+			SearchStudent();
 			break;
 		case 8:
 			//ByNumb();
 			break;
 		case 9:
-			Sort();
+			SortStudent();
 			break;
 		case 10:
 			//FreeRAM();
@@ -207,19 +137,19 @@ int StudentList::TestMenu(){
 			//RemoveAll();
 			break;
 		case 12:
-			Load();
+			LoadStudent();
 			break;
 		case 13:
-			Save();
+			SaveStudent();
 			break;
 		case 14:
-			StudentList();
+			Teacher();
 			break;
 		case 15:
-			//~StudentList();
+			//~Teacher();
 			break;
 		case 16:
-			//IsExist();
+			//IsStudentExist();
 			break;
 		case 0:
 			break;
@@ -228,7 +158,7 @@ int StudentList::TestMenu(){
 
 }
 
-int StudentList::Load(){
+int Teacher::LoadStudent(){
 	int count = 0, head = 0;
 	string line;
 	float tmp = 0;
@@ -279,7 +209,7 @@ int StudentList::Load(){
 	return 0;
 }
 
-int StudentList::Save(){
+int Teacher::SaveStudent(){
 	ofstream ofs("student.dat");
 	if(!ofs) return -2;
 	ofs << "Number\tName\tGender\tType\tMath\tChinese\tEnglish\t\
@@ -311,7 +241,7 @@ Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 
 
 
-int StudentList::BrowseMenu(){
+int Teacher::BrowseStudentMenu(){
 	cout << "1. Browse by name:" << endl;
 	cout << "2. Browse by number:" << endl;
 	cout << "3. Browse by gender:" << endl;
@@ -324,41 +254,41 @@ int StudentList::BrowseMenu(){
 	cin >> i;
 	switch(i){
 		case 1:
-			Sort(ByName);
-			Print();
+			SortStudent(ByName);
+			PrintStudent();
 			break;
 		case 2:
-			Sort(ByNumb);
-			Print();
+			SortStudent(ByNumb);
+			PrintStudent();
 			break;
 		case 3:
-			Sort(ByGender);
-			Print();
+			SortStudent(ByGender);
+			PrintStudent();
 			break;
 		case 4:
-			Sort(ByType);
-			Print();
+			SortStudent(ByType);
+			PrintStudent();
 			break;
 		case 5:
-			Sort(ByMath);
-			Print();
+			SortStudent(ByMath);
+			PrintStudent();
 			break;
 		case 6:
-			Sort(ByAverage);
-			Print();
+			SortStudent(ByAverage);
+			PrintStudent();
 			break;
 	}
 	return i;
 	
 }
-// Browse by name-order, number, gender, type, math, average score. 
-int StudentList::Browse(){
-	while(BrowseMenu())
+// BrowseStudent by name-order, number, gender, type, math, average score. 
+int Teacher::BrowseStudent(){
+	while(BrowseStudentMenu())
 		;
 	return 0;
 }
 
-bool StudentList::IsExist(const int num){
+bool Teacher::IsStudentExist(const int num){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		if(num == (*it)->numb){
@@ -369,7 +299,7 @@ bool StudentList::IsExist(const int num){
 	return false;
 }
 
-bool StudentList::IsExist(const int num, StudentData* &p){
+bool Teacher::IsStudentExist(const int num, StudentData* &p){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		if(num == (*it)->numb){
@@ -382,7 +312,7 @@ bool StudentList::IsExist(const int num, StudentData* &p){
 	return false;
 }
 
-void StudentList::RemoveAll(){
+void Teacher::RemoveAllStudent(){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		delete *it;
@@ -391,7 +321,7 @@ void StudentList::RemoveAll(){
 	student_list.clear();
 }
 
-bool StudentList::Remove(int num){
+bool Teacher::RemoveStudent(int num){
 	list<StudentData*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		if(num == (*it)->numb){
@@ -409,27 +339,27 @@ bool StudentList::Remove(int num){
 
 }
 
-void StudentList::Remove(){
-	Print();
+void Teacher::RemoveStudent(){
+	PrintStudent();
 	cout << "Please enter the number of student you want to remove: "\
 	   	<< endl;
 	int num;
 	cin >> num;
-	bool if_remove = Remove(num);
+	bool if_remove = RemoveStudent(num);
 	if(!if_remove)
 		cout << "The number " << num << " doesn't exist." << endl;
-	Print();
+	PrintStudent();
 }
 
-void StudentList::Modify(){
-	Print();
+void Teacher::ModifyStudent(){
+	PrintStudent();
 	cout << "Please enter the student number you want to modify:"\
 	<< endl;
 	int num;
 	cin >> num;
 	StudentData* pold = nullptr;
-	while(!IsExist(num, pold)){
-		Print();
+	while(!IsStudentExist(num, pold)){
+		PrintStudent();
 		cout << "Doesn't exists, Please enter another number";
 		cout << "[0 to exit]: "<< endl;
 		cin >> num;
@@ -449,7 +379,7 @@ void StudentList::Modify(){
 		ScienceData* p = new ScienceData;
 		pnew = p->Input();
 	}
-	if(IsExist(pnew->numb)){
+	if(IsStudentExist(pnew->numb)){
 		cout << "The new number is already exist, please ";
 		cout << "try another number" << endl;
 		return ;
@@ -464,18 +394,18 @@ void StudentList::Modify(){
 	char confirm;
 	cin >> confirm;
 	if(confirm == 'y' | confirm == 'Y'){
-		Remove(pold->numb);
+		RemoveStudent(pold->numb);
 		student_list.push_back(pnew);
 	}
-	Print();
+	PrintStudent();
 }
 
-void StudentList::SearchByName(){
+void Teacher::SearchStudentByName(){
 	cout << "Please enter the name you want to search: ";
 	string str;
 	cin >> str;
 	list<StudentData*>::iterator it = student_list.begin();
-	PrintTitle();
+	PrintStudentTitle();
 	while(it != student_list.end()){
 		if((*it)->name == str){
 			(*it)->Print();
@@ -486,12 +416,12 @@ void StudentList::SearchByName(){
 	cout << "Doesn't find the name " << str << "!" << endl;
 }
 
-void StudentList::SearchByNumb(){
+void Teacher::SearchStudentByNumb(){
 	cout << "Please enter the number you want to search: ";
 	int num;
 	cin >> num;
 	list<StudentData*>::iterator it = student_list.begin();
-	PrintTitle();
+	PrintStudentTitle();
 	while(it != student_list.end()){
 		if((*it)->numb == num){
 			(*it)->Print();
@@ -502,14 +432,14 @@ void StudentList::SearchByNumb(){
 	cout << "Doesn't find the number " << num << "!" << endl;
 }
 
-void StudentList::SearchByGend(){
+void Teacher::SearchStudentByGend(){
 	cout << "Please enter the Gender you want to search ";
 	cout << "[0 for boy, 1 for girl]:";
 	int count = 0;
 	bool sex;
 	cin >> sex;
 	list<StudentData*>::iterator it = student_list.begin();
-	PrintTitle();
+	PrintStudentTitle();
 	while(it != student_list.end()){
 		if((*it)->sex == sex){
 			(*it)->Print();
@@ -523,14 +453,14 @@ void StudentList::SearchByGend(){
 		cout << "There is no Boy." << endl;
 }
 
-void StudentList::SearchByType(){
+void Teacher::SearchStudentByType(){
 	cout << "Please enter the Type you want to search ";
 	cout << "[0 for Science, 1 for Arts]:";
 	int count = 0;
 	bool type;
 	cin >> type;
 	list<StudentData*>::iterator it = student_list.begin();
-	PrintTitle();
+	PrintStudentTitle();
 	while(it != student_list.end()){
 		if((*it)->type == type){
 			(*it)->Print();
@@ -545,14 +475,14 @@ void StudentList::SearchByType(){
 
 }
 
-void StudentList::SearchByMath(){
+void Teacher::SearchStudentByMath(){
 	cout << "Please enter the range of math you want to search ";
 	cout << "[Seperate with ' ']:";
 	int count = 0;
 	float min, max;
 	cin >> min >> max;
 	list<StudentData*>::iterator it = student_list.begin();
-	PrintTitle();
+	PrintStudentTitle();
 	while(it != student_list.end()){
 		if((*it)->math >= min && (*it)->math <= max){
 			(*it)->Print();
@@ -565,7 +495,7 @@ void StudentList::SearchByMath(){
 }
 
 // search by name/number/gender/range_of_score
-int StudentList::SearchMenu(){
+int Teacher::SearchStudentMenu(){
 	ClearScreen();
 	cout << "1. Search by Name: " << endl;
 	cout << "2. Search by Number: " << endl;
@@ -579,19 +509,19 @@ int StudentList::SearchMenu(){
 	cout << endl;
 	switch(i){
 		case 1:
-			SearchByName();
+			SearchStudentByName();
 			break;
 		case 2:
-			SearchByNumb();
+			SearchStudentByNumb();
 			break;
 		case 3:
-			SearchByGend();
+			SearchStudentByGend();
 			break;
 		case 4:
-			SearchByType();
+			SearchStudentByType();
 			break;
 		case 5:
-			SearchByMath();
+			SearchStudentByMath();
 			break;
 		case 0:
 			break;
@@ -603,13 +533,13 @@ int StudentList::SearchMenu(){
 	return i;
 }
 
-int StudentList::Search(){		//Search menu
-	while(SearchMenu())
+int Teacher::SearchStudent(){		//Search menu
+	while(SearchStudentMenu())
 		;
 	return 0;
 }
 
-void StudentList::Sort(funcp fp){
+void Teacher::SortStudent(funcp fp){
 	list<StudentData*>::iterator i = student_list.begin();
 	while(i != student_list.end()){
 		list<StudentData*>::iterator j = i;
@@ -626,14 +556,14 @@ void StudentList::Sort(funcp fp){
 	}
 }
 
-// SortMenu is in BrowseMenu
-void StudentList::Sort(){
-	Sort(ByNumb);
-	Print();
+// SortMenu is in BrowseStudentMenu
+void Teacher::SortStudent(){
+	SortStudent(ByNumb);
+	PrintStudent();
 }
 
 // normal SortByNumber
-// void StudentList::Sort(){
+// void Teacher::SortStudent(){
 // 	list<StudentData*>::iterator i = student_list.begin();
 // 	while(i != student_list.end()){
 // 		list<StudentData*>::iterator j = i;

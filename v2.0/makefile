@@ -1,5 +1,5 @@
-enter.out: enter.o admin.o student-list.o manager-list.o
-	g++ -o enter.out enter.o admin.o student-list.o manager-list.o
+enter.out: enter.o admin.o teacher.o manager-list.o student.o
+	g++ -o enter.out enter.o admin.o teacher.o manager-list.o student.o
 
 enter.o: enter.cpp
 	g++ -g -c enter.cpp -o enter.o
@@ -7,12 +7,15 @@ enter.o: enter.cpp
 admin.o: admin.cpp admin.h 
 	g++ -g -c admin.cpp -o admin.o
 
-student-list.o: student-list.cpp student-list.h
-	g++ -g -c student-list.cpp -o student-list.o 
+teacher.o: teacher.cpp teacher.h
+	g++ -g -c teacher.cpp -o teacher.o 
 
 manager-list.o: manager-list.cpp manager-list.h
 	g++ -g -c manager-list.cpp -o manager-list.o
 
+student.o: student.cpp student.h
+	g++ -g -c student.cpp -o student.o
+
 clean:
-	rm -f enter.out enter.o admin.o student-list.o
+	rm -f enter.out enter.o admin.o teacher.o
     	

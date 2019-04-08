@@ -64,19 +64,19 @@ int Admin::Menu(){
 
 	switch(i){
 		case 1:
-			student_list.Input();
+			student_list.InputStudent();
 			break;
 		case 2:
-			while(student_list.Browse())
+			while(student_list.BrowseStudent())
 				;
 			break;
 		case 3:
-			student_list.Remove();
+			student_list.RemoveStudent();
 			break;
 		case 4:
-			student_list.Modify();
+			student_list.ModifyStudent();
 		case 5:
-			while(student_list.Search())
+			while(student_list.SearchStudent())
 				;
 			break;
 		case 6:
@@ -102,5 +102,5 @@ void Admin::Run(){
 }
 
 void Admin::Exit(){
-	student_list.Save();
+	student_list.SaveStudent();
 }

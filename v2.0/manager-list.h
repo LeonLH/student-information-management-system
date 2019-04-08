@@ -7,8 +7,9 @@ class ManagerData{
 public:
 	int numb;
 	std::string name;
-	std::string passwd;
 	bool sex; 		// 0 for man,  1 for women
+
+	std::string passwd;
 	int prio;		// 0 for high, 1 for mid, 2 for low 
 
 	void Print();	

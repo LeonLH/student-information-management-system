@@ -89,7 +89,7 @@ ManagerList::ManagerList(){
 
 ManagerList::~ManagerList(){
 	Save();
-	RemoveAll();
+	RemoveAllHelper();
 }
 
 void ManagerList::Load(){
