@@ -21,10 +21,6 @@ void TestForManager(){
 	manager.Test();
 }
 
-void TestManager(){
-
-}
-
 void TestAdmin(){
 
 }
