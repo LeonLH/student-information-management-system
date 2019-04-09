@@ -5,24 +5,26 @@
 #include<list>
 #include<string>
 #include"student.h"
+#include"person.h"
 
 // data protected
 typedef int (*funcp)(const StudentData *pStudentData1, const StudentData *pStudentData2);
 
-class Teacher{
+class Teacher: public Person{
 private:
 	float salary;
 	int subject;
+	std::list<StudentData*> student_list;
+	void PrintStudentTitle();
 
 public:
 	Teacher(void);
 	~Teacher(void);
 
-private:
-	std::list<StudentData*> student_list;
-	void PrintStudentTitle();
-
 public:
+	void Print();
+	Teacher* Input();
+
 	void PrintStudent();
 	int BrowseStudentMenu();
 	int  BrowseStudent();

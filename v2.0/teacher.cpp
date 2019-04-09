@@ -22,6 +22,7 @@ static int ByGender(const StudentData *p1, const StudentData *p2){
 static int ByType(const StudentData *p1, const StudentData *p2){
 	return p1->type < p2->type;
 }
+
 static int ByMath(const StudentData *p1, const StudentData *p2){
 	return p1->math < p2->math;
 }
@@ -162,7 +163,7 @@ int Teacher::LoadStudent(){
 	int count = 0, head = 0;
 	string line;
 	float tmp = 0;
-	ifstream ifs("student.dat");
+	ifstream ifs("./data/student.dat");
 	while(!ifs) return -2;
 	while(getline(ifs, line)){
 		istringstream is(line);

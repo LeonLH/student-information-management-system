@@ -1,22 +1,42 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include "teacher.h"
+#include<list>
+#include<string>
+#include"teacher.h"
 
-class Admin{
-	Teacher student_list;
-//	Manager mana_list;
+class Admin: public Person{
 public:
 	Admin();
 	~Admin();
+	void TestAdmin();
+	int TestAdminMenu();
+private:
+	std::list<Teacher*> teacher_list;
+	
+	bool LoginHelper();
+	bool Login();
+	bool Logout();
+	
+	void InputTeacher();
+   	void PrintTeacher();	
+	void LoadTeacher();
+	void SaveTeacher();
+	void BrowseTeacher();
 
-	void Welcome();
-	int  Login();
-	int  Menu();
+	bool RemoveTeacherHelper();
+	void RemoveTeacher();
+	bool ModifyTeacherHelper();
+	void ModifyTeacher();
 
-	void Run();
-	void Exit();
+	void SortTeacherByName();
+	void SortTeacher();
+	bool RemoveAllTeacherHelper();
+	void RemoveAllTeacher();
+	//Teacher* IsExist(const int num);
+	std::list<Teacher*>::iterator IsTeacherExist(const int num);
 
+	
+	
 };
-
 #endif

@@ -1,15 +1,15 @@
 #include<iostream>
 #include"admin.h"
 #include"teacher.h"
-#include"manager.h"
+#include"admin.h"
 
-void normalRun(){
-	Admin admin;
-	admin.Welcome();
-	admin.Run();
-	admin.Exit();
-}
-
+// void normalRun(){
+// 	Admin admin;
+// 	admin.Welcome();
+// 	admin.Run();
+// 	admin.Exit();
+// }
+ 
 void TestForStudent(){
 	Teacher teacher;
 	teacher.Test();
@@ -17,8 +17,8 @@ void TestForStudent(){
 }
 
 void TestForManager(){
-	ManagerList manager;
-	manager.Test();
+	Admin administrator;
+	administrator.TestAdmin();
 }
 
 void TestAdmin(){
