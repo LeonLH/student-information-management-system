@@ -27,7 +27,7 @@ void TestAdmin(){
 
 int main(){
 	//normalRun();
-	//TestForStudent();
+	TestForStudent();
 	TestForManager();
 	return 0;
 }
