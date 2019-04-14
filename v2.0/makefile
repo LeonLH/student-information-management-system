@@ -1,7 +1,7 @@
-enter.out: enter.o admin.o teacher.o student.o person.o
-	g++ -o enter.out enter.o admin.o teacher.o student.o person.o
+main.out: enter.o admin.o teacher.o student.o person.o mytools/normal_tools.o
+	g++ -o main.out enter.o admin.o teacher.o student.o person.o mytools/normal_tools.o
 
-enter.o: enter.cpp
+enter.o: enter.cpp enter.h
 	g++ -g -c enter.cpp -o enter.o
 
 admin.o: admin.cpp admin.h 
@@ -17,5 +17,5 @@ person.o: person.cpp person.h
 	g++ -g -c person.cpp -o person.o
 
 clean:
-	rm -f enter.out enter.o admin.o teacher.o manager.o student.o person.o
+	rm -f enter.o admin.o teacher.o manager.o student.o person.o normal_tools.o
     	

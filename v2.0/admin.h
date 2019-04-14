@@ -9,19 +9,22 @@ class Admin: public Person{
 public:
 	Admin();
 	~Admin();
+
+	void Run();
+	int Menu();
 	void TestAdmin();
 	int TestAdminMenu();
+	bool LoadTeacher();
+	bool SaveTeacher();
+	bool Login();
 private:
 	std::list<Teacher*> teacher_list;
 	
 	bool LoginHelper();
-	bool Login();
 	bool Logout();
 	
 	void InputTeacher();
    	void PrintTeacher();	
-	void LoadTeacher();
-	void SaveTeacher();
 	void BrowseTeacher();
 
 	bool RemoveTeacherHelper();

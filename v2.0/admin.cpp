@@ -84,15 +84,15 @@ void Admin::InputTeacher(){
 	}while(c == 'Y' || c == 'y');
 }
 Admin::Admin(){
-	LoadTeacher();
+	//LoadTeacher();
 }
 
 Admin::~Admin(){
-	SaveTeacher();
-	RemoveAllTeacherHelper();
+	//SaveTeacher();
+	//RemoveAllTeacherHelper();
 }
 
-void Admin::LoadTeacher(){
+bool Admin::LoadTeacher(){
 	ifstream ifs;
 	ifs.open("./data/teacher.dat");
 	string line;
@@ -109,9 +109,13 @@ void Admin::LoadTeacher(){
 		teacher_list.push_back(p);
 	}
 	ifs.close();
+	if(teacher_list.empty())
+		return false;
+	else
+		return true;
 }
 
-void Admin::SaveTeacher(){
+bool Admin::SaveTeacher(){
 	ofstream ofs;
 	ofs.open("./data/teacher.dat");
 	ofs << "Number" << '\t' << "Name" << '\t' << "Gender" << '\t'\
@@ -124,6 +128,10 @@ void Admin::SaveTeacher(){
 		it++;
 	}
 	ofs.close();
+	if(it == teacher_list.end())
+		return true;
+	else
+		return false;
 }
 
 list<Teacher*>::iterator Admin::IsTeacherExist(const int num){
@@ -137,17 +145,6 @@ list<Teacher*>::iterator Admin::IsTeacherExist(const int num){
 	return it;
 }
 
-// Teacher* Admin::IsExist(const int num){
-// 	list<Teacher*>::iterator it = teacher_list.begin();
-// 	while(it != teacher_list.end()){
-// 		if((*it)->numb == num){
-// 			return *it;
-// 		}
-// 		it++;
-// 	}
-// 	return nullptr;
-// }
-// 
 bool Admin::LoginHelper(){
 	cout << "Please enter your number: " << endl;
 	int num;
@@ -326,15 +323,25 @@ void Admin::SortTeacher(){
 	PrintTeacher();
 }
 
+void Admin::Run(){
+	cout << "You are a good administrator!" << endl;
+}
+
+int Admin::Menu(){
+	ClearScreen();
+	// print current person
+	return 0;
+}
+
 int Admin::TestAdminMenu(){
 	ClearScreen();
 	PrintCurrentManager();
-// print 					done
-// login and logout			done
-// input by superuser 		done
-// change password			
-// remove by super			done
-// modify by super 			done
+	// print 					done
+	// login and logout			done
+	// input by superuser 		done
+	// change password			
+	// remove by super			done
+	// modify by super 			done
 	cout << "Test print, \t\ttype 1" << endl;			// done 
 	cout << "Test login, \t\ttype 2" << endl;			// done
 	cout << "Test input by super, \ttype 3" << endl;	// done 

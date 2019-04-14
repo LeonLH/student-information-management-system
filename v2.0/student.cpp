@@ -2,8 +2,7 @@
 #include<iostream>
 #include<string>
 using namespace std;
-
-void StudentData::Print(){
+void Student::Print(){
 	string type, gender;
 	if(this->type == 0)
 		type = "Scie";
@@ -20,40 +19,49 @@ void StudentData::Print(){
 "\t" << this->engl << "\t";
 
 }
-void ScienceData::Print(){
-	StudentData::Print();
+void ScienceStudent::Print(){
+	Student::Print();
 	cout << " \t \t" << this->biol << "\t" << this->phys << \
 "\t" << this->chem << endl;
 }
-void ArtsData::Print(){
-	StudentData::Print();
+void ArtsStudent::Print(){
+	Student::Print();
 	cout << this->geog << "\t" << this->hist << "\t \t \t" << endl;
 }
 
-
-
-float StudentData::AverageScore() const{
+float Student::AverageScore() const{
 	return 0;
 }
 
-float ArtsData::AverageScore() const{
+float ArtsStudent::AverageScore() const{
 	float res = 0;
 	res = chin + engl + math + hist + geog;
 	return res/5;
 }
 
-float ScienceData::AverageScore() const{
+float ScienceStudent::AverageScore() const{
 	float res = 0;
 	res = chin + engl + math;
 	res += biol + chem + phys;
 	return res/6;
 }
 
-StudentData* StudentData::Input(){
+void Student::Run(){
+	Menu();
+//	while(Menu())		TBD
+//		;
+}
+int Student::Menu(){
+	this->Print();
+
+	return 0;
+}
+
+Student* Student::Input(){
 	return nullptr;
 }
 
-StudentData* ArtsData::Input(){
+Student* ArtsStudent::Input(){
 	this->type = 1;
 	cout << "Please enter your Number, Name, Gender, Math, "\
 		<< "Chinese, English, Geograph, History: "<< endl;
@@ -62,7 +70,7 @@ StudentData* ArtsData::Input(){
 	return this;
 }
 
-StudentData* ScienceData::Input(){
+Student* ScienceStudent::Input(){
 	this->type = 0;
 	cout << "Please enter your Number, Name, Gender, Math, "\
 		<< "Chinese, English, Biology, Physics and Chemics: "\
@@ -72,4 +80,3 @@ StudentData* ScienceData::Input(){
 		>> this->chem;
 	return this;
 }
-

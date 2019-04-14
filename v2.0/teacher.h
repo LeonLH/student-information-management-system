@@ -8,37 +8,42 @@
 #include"person.h"
 
 // data protected
-typedef int (*funcp)(const StudentData *pStudentData1, const StudentData *pStudentData2);
+typedef int (*funcp)(const Student *Student1, const Student *Student2);
 
 class Teacher: public Person{
 private:
 	float salary;
 	int subject;
-	std::list<StudentData*> student_list;
+	std::list<Student*> student_list;
 	void PrintStudentTitle();
 
 public:
-	Teacher(void);
-	~Teacher(void);
+	Teacher();
+	~Teacher();
 
 public:
 	void Print();
 	Teacher* Input();
 
+//	bool LoginHelper();
+//	bool Login();
+
 	void PrintStudent();
 	int BrowseStudentMenu();
 	int  BrowseStudent();
 
-	StudentData* InputStudent();
+	Student* InputStudent();
 
 	bool IsStudentExist(int n);
-	bool IsStudentExist(const int num, StudentData* &p);
+	bool IsStudentExist(const int num, Student* &p);
 
 	void RemoveAllStudent();
 	bool RemoveStudent(int num);
 	void RemoveStudent();
 	void ModifyStudent();
 
+	void Run();
+	int Menu();
 	void Test();
 	int TestMenu();
 	void Welcome();

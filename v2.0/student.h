@@ -4,13 +4,16 @@
 #include"person.h"
 #include<string>
 
-class StudentData : public Person{
+class Student : public Person{
 public:
 
-	virtual ~StudentData(){};
-	virtual StudentData* Input();
+	Student(){prio = 3;};
+	virtual ~Student(){};
+	virtual Student* Input();
 	virtual void Print();
 	virtual float AverageScore() const;
+	int Menu();
+	void Run();
 
 	bool  type;		// 0 is for Science, 1 for liberal arts.
 	float math;
@@ -18,24 +21,26 @@ public:
 	float engl;
 };
 
-class ArtsData: public StudentData{
+class ArtsStudent: public Student{
 public:
 	float geog;
 	float hist;
-	StudentData* Input();
+	Student* Input();
 	void Print();
 	float AverageScore() const;
-	~ArtsData(){};
+	ArtsStudent(){};
+	~ArtsStudent(){};
 };
-class ScienceData: public StudentData{
+class ScienceStudent: public Student{
 public:
 	float biol;
 	float phys;
 	float chem;
-	StudentData* Input();
+	Student* Input();
 	void Print();
 	float AverageScore() const;
-	~ScienceData(){};
+	ScienceStudent(){};
+	~ScienceStudent(){};
 };
 
 
