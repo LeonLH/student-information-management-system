@@ -55,6 +55,10 @@ bool Person::Logout(){
 }
 
 bool Person::ChangePassword(){
+	cout << "Please enter your name: " << endl;
+	string name;
+
+
 	return true;
 }
 

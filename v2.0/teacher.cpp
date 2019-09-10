@@ -1,10 +1,30 @@
 #include"teacher.h"
+#include"mytools/normal_tools.h"
 #include<list>
 #include <stdio.h>
 #include<iostream>
 #include <sstream>
 #include <fstream>
 using namespace std;
+
+extern Person* current_person;
+extern NormalTools tools;
+extern list<Student*> student_list;
+static Teacher* current_teacher = nullptr;
+
+static void PrintTitle(){
+	cout << "Number\tName\tGender\tPRI\tPasswd" << endl;
+}
+static void PrintCurrentTeacher(){
+	if(current_teacher){
+		PrintTitle();
+		current_teacher->Print();
+	}
+	else{
+		cout << "Status: Unlogged" << endl;
+	}
+	cout << endl;
+}
 
 static void ClearScreen(){
 	cout << "\033[2J\033[1;1H";
@@ -29,6 +49,34 @@ static int ByMath(const Student *p1, const Student *p2){
 // need virtual function support, otherwise it will be complex
 static int ByAverage(const Student *p1, const Student *p2){
 	return p1->AverageScore() < p2->AverageScore();
+}
+
+
+void Teacher::Print(){
+	string pri;
+	string gender;
+	if(this->sex)
+		gender = "Women";
+	else
+		gender = "Men";
+	if(this->prio == 0)
+		pri = "High";
+	else if(this->prio == 1)
+		pri = "Mid";
+	else if(this->prio == 2)
+		pri = "Low";
+
+	cout << this->numb << '\t' << this->name << '\t' \
+		<< gender << '\t' << pri << '\t' \
+		<< this->pw << endl;
+}
+
+Teacher* Teacher::Input(){
+	cout << "Please input the teacher Number, Name, Gender, Password \
+and Priority[Seperate with ' ']" << endl;
+	cin >> this->numb >> this->name >> this->sex >> this->pw\
+		>> this->prio;
+	return this;
 }
 
 Student* Teacher::InputStudent(){
@@ -79,14 +127,54 @@ void Teacher::PrintStudent(){
 }
 
 void Teacher::Run(){
-	cout << "You are a good teacher!" << endl;
-	//while(Menu())
-	//	;
+	current_teacher = (Teacher*)current_person;
+	while(Menu())
+		;
 }
 int Teacher::Menu(){
-	cout << "You are a good teacher!" << endl;
-	cout << "1. Print Student list!" << endl;
-	return 0;
+	tools.ClearScreen();
+	PrintCurrentTeacher();
+	cout << "Browse student, \ttype 1" << endl;		// done
+	cout << "Input student, \t\ttype 2" << endl;		// done
+	cout << "Remove student, \ttype 3" << endl;		// done
+	cout << "Modify student, \ttype 4" << endl;		// done
+	cout << "Search student, \ttype 5" << endl;		// done
+	cout << "Sort student, \t\ttype 6" << endl;		// done
+	cout << "Remove all student, \ttype 7" << endl;	// done
+	cout << "Logout, \t\ttype 8" << endl;	// done
+	cout << "QUIT, \t\t\ttype 0" << endl;
+
+	int i;
+	cin >> i;
+	switch(i){
+		case 1:
+			BrowseStudent();
+			break;
+		case 2:
+			InputStudent();
+			break;
+		case 3:
+			RemoveStudent();
+			break;
+		case 4:
+			ModifyStudent();
+			break;
+		case 5:
+			SearchStudent();
+			break;
+		case 6:
+			SortStudent();
+			break;
+		case 7:
+			RemoveAllStudent();
+			break;
+		case 8:
+			Logout();
+			break;
+		case 0:
+			break;
+	}
+	return i;
 }
 
 void Teacher::Test(){

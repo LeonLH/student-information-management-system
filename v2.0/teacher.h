@@ -14,7 +14,7 @@ class Teacher: public Person{
 private:
 	float salary;
 	int subject;
-	std::list<Student*> student_list;
+	//std::list<Student*> student_list;
 	void PrintStudentTitle();
 
 public:

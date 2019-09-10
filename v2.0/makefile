@@ -1,21 +1,75 @@
-main.out: enter.o admin.o teacher.o student.o person.o mytools/normal_tools.o
-	g++ -o main.out enter.o admin.o teacher.o student.o person.o mytools/normal_tools.o
+# 'make depend' uses makedepend to automatically generate dependencies 
+#               (dependencies are added to end of Makefile)
+# 'make'        build executable file 'mycc'
+# 'make clean'  removes all .o and executable files
+#
 
-enter.o: enter.cpp enter.h
-	g++ -g -c enter.cpp -o enter.o
+# define the C compiler to use
+CC = g++
 
-admin.o: admin.cpp admin.h 
-	g++ -g -c admin.cpp -o admin.o
+# define any compile-time flags
+# -Wall
+CFLAGS = -g
 
-teacher.o: teacher.cpp teacher.h
-	g++ -g -c teacher.cpp -o teacher.o 
+# define any directories containing header files other than /usr/include
+#
+# INCLUDES = -I/home/newhall/include  -I../include
 
-student.o: student.cpp student.h
-	g++ -g -c student.cpp -o student.o
+# define library paths in addition to /usr/lib
+#   if I wanted to include libraries not in /usr/lib I'd specify
+#   their path using -Lpath, something like:
+LFLAGS = -L./mytools/
 
-person.o: person.cpp person.h
-	g++ -g -c person.cpp -o person.o
+# define any libraries to link into executable:
+#   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
+#   option, something like (this will link in libmylib.so and libm.so:
+#   Notice: libraries must named like libxxx.so/libxxx.a, and when use it, it should not include prefix and suffix, just type -lxxx.
+LIBS = -lnormal_tools
+
+# define the C source files
+# SRCS = emitter.c error.c init.c lexer.c main.c symbol.c parser.c
+SRCS = admin.cpp enter.cpp person.cpp student.cpp teacher.cpp
+
+# define the C object files 
+#
+# This uses Suffix Replacement within a macro:
+#   $(name:string1=string2)
+#         For each word in 'name' replace 'string1' with 'string2'
+# Below we are replacing the suffix .c of all words in the macro SRCS
+# with the .o suffix
+#
+OBJS = $(SRCS:.cpp=.o)
+
+# define the executable file 
+MAIN = Main.out
+
+#
+# The following part of the makefile is generic; it can be used to 
+# build any executable just by changing the definitions above and by
+# deleting dependencies appended to the file from 'make depend'
+#
+
+.PHONY: depend clean
+
+all:    $(MAIN)
+		@echo  Simple compiler named Main.out has been compiled
+
+$(MAIN): $(OBJS) 
+		$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
+# this is a suffix replacement rule for building .o's from .c's
+# it uses automatic variables $<: the name of the prerequisite of
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# (see the gnu make manual section about automatic variables)
+
+# .c.o:
+%.o: %.cpp
+		$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
-	rm -f enter.o admin.o teacher.o manager.o student.o person.o normal_tools.o
-    	
+		$(RM) *.o *~ $(MAIN)
+
+depend: $(SRCS)
+		makedepend $(INCLUDES) $^
+
+# DO NOT DELETE THIS LINE -- make depend needs it

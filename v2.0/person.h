@@ -10,6 +10,7 @@ public:
 	int prio; 		// 0 super, 1 admin, 2 teacher, 3 student
 	std::string pw;
 
+	Person(){};
 	virtual ~Person(){};
 
 	virtual Person* Input(){return nullptr;};

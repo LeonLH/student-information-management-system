@@ -2,10 +2,15 @@
 #include<iostream>
 #include<sstream>
 #include<fstream>
+#include"mytools/normal_tools.h"
+
 using namespace std;
 
-static Teacher* current_teacher = nullptr;
+extern NormalTools tools;
+extern Person* current_person;
+extern list<Teacher*> teacher_list;
 
+static Teacher* current_teacher = nullptr;
 static void ClearScreen(){
 cout << "\033[2J\033[1;1H";
 }
@@ -23,25 +28,6 @@ static void PrintCurrentManager(){
 	cout << endl;
 }
 
-void Teacher::Print(){
-	string pri;
-	string gender;
-	if(this->sex)
-		gender = "Women";
-	else
-		gender = "Men";
-	if(this->prio == 0)
-		pri = "High";
-	else if(this->prio == 1)
-		pri = "Mid";
-	else if(this->prio == 2)
-		pri = "Low";
-
-	cout << this->numb << '\t' << this->name << '\t' \
-		<< gender << '\t' << pri << '\t' \
-		<< this->pw << endl;
-}
-
 void Admin::PrintTeacher(){
 	list<Teacher*>::iterator it = teacher_list.begin();
 	PrintTitle();
@@ -52,14 +38,6 @@ void Admin::PrintTeacher(){
 	cout << "Press any key to continue: ";
 	cin.ignore();
 	cin.get();
-}
-
-Teacher* Teacher::Input(){
-	cout << "Please input the teacher Number, Name, Gender, Password \
-and Priority[Seperate with ' ']" << endl;
-	cin >> this->numb >> this->name >> this->sex >> this->pw\
-		>> this->prio;
-	return this;
 }
 
 void Admin::InputTeacher(){
@@ -82,9 +60,6 @@ void Admin::InputTeacher(){
 			continue;
 		}
 	}while(c == 'Y' || c == 'y');
-}
-Admin::Admin(){
-	//LoadTeacher();
 }
 
 Admin::~Admin(){
@@ -145,51 +120,51 @@ list<Teacher*>::iterator Admin::IsTeacherExist(const int num){
 	return it;
 }
 
-bool Admin::LoginHelper(){
-	cout << "Please enter your number: " << endl;
-	int num;
-	string passwd;
-	cin >> num;
-	cin.clear();
-	cin.ignore(10000, '\n');
-	list<Teacher*>::iterator it = IsTeacherExist(num);
-	Teacher* p = *it;
-	if(it != teacher_list.end()){
-		cout << "Please enter your password: " << endl;
-		cin >> passwd;
-		if(p->pw == passwd){
-			cout << "Welcome! " << p->name << endl;
-			current_teacher = p;
-			return true;
-		}
-		else{
-			cout << "Wrong password, ";
-			return false;
-		}
-	}
-	else{
-		cout << "The number doesn't exist, ";
-		return false;
-	}
-}
-
-bool Admin::Login(){
-	char quit;
-	bool success = false;
-	while(!success){
-		success = LoginHelper();
-		if(success)
-			break;
-		cout << "[# to EXIT / otherwise TRY AGIAN]: ";
-		cin >> quit;
-		if(quit == '#')
-			break;
-	}
-	cout << "Press any key to continue: " ;
-	cin.ignore();
-	cin.get();
-	return success;
-}
+// bool Admin::LoginHelper(){
+// 	cout << "Please enter your number: " << endl;
+// 	int num;
+// 	string passwd;
+// 	cin >> num;
+// 	cin.clear();
+// 	cin.ignore(10000, '\n');
+// 	list<Teacher*>::iterator it = IsTeacherExist(num);
+// 	Teacher* p = *it;
+// 	if(it != teacher_list.end()){
+// 		cout << "Please enter your password: " << endl;
+// 		cin >> passwd;
+// 		if(p->pw == passwd){
+// 			cout << "Welcome! " << p->name << endl;
+// 			current_teacher = p;
+// 			return true;
+// 		}
+// 		else{
+// 			cout << "Wrong password, ";
+// 			return false;
+// 		}
+// 	}
+// 	else{
+// 		cout << "The number doesn't exist, ";
+// 		return false;
+// 	}
+// }
+// 
+// bool Admin::Login(){
+// 	char quit;
+// 	bool success = false;
+// 	while(!success){
+// 		success = LoginHelper();
+// 		if(success)
+// 			break;
+// 		cout << "[# to EXIT / otherwise TRY AGIAN]: ";
+// 		cin >> quit;
+// 		if(quit == '#')
+// 			break;
+// 	}
+// 	cout << "Press any key to continue: " ;
+// 	cin.ignore();
+// 	cin.get();
+// 	return success;
+// }
 
 bool Admin::Logout(){
 	current_teacher = nullptr;
@@ -324,13 +299,59 @@ void Admin::SortTeacher(){
 }
 
 void Admin::Run(){
-	cout << "You are a good administrator!" << endl;
+	current_teacher = (Teacher*)current_person;
+	while(Menu())
+		;
+	//cout << "You are a good administrator!" << endl;
 }
 
+// normal admin can do: manipulate teacher_list, change own password
 int Admin::Menu(){
-	ClearScreen();
+	tools.ClearScreen();
+	PrintCurrentManager();
+	cout << "Print teacher, \t\ttype 1" << endl;			
+	cout << "Add a teacher, \t\ttype 2" << endl;	
+	cout << "Remove a teacher, \ttype 3" << endl;
+	cout << "Modify teachers, \ttype 4" << endl;
+	cout << "Sort teacher info, \ttype 5" << endl;			
+	cout << "Remove all teachers, \ttype 6" << endl;	
+	cout << "Change password, \ttype 7" << endl;
+	cout << "Logout, \t\ttype 8" << endl;	
+	cout << "QUIT, \t\t\ttype 0" << endl;
+	
+	int i;
+	cin >> i;
+	switch(i){
+		case 1:
+			PrintTeacher();
+			break;
+		case 2:
+			Input();
+			break;
+		case 3:
+			RemoveTeacher();
+			break;
+		case 4:
+			ModifyTeacher();
+			break;
+		case 5:
+			SortTeacher();
+			break;
+		case 6:
+			RemoveAllTeacher();
+			break;
+		case 7:
+			ChangePassword();
+			break;
+		case 8:
+			Logout();
+			break;
+		case 0:
+			break;
+	}
+	return i;
+
 	// print current person
-	return 0;
 }
 
 int Admin::TestAdminMenu(){

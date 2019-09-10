@@ -13,8 +13,10 @@ list<Student*> student_list;
 list<Teacher*> teacher_list;
 NormalTools tools;
 Person* current_person;
+int an_external_integer;
 
 void Enter::Welcome(){
+
 	tools.ClearScreen();
 	cout << "This software is writen by Leon. Enjoy it!\n"\
 		<< "Please do not hesitate to contact me if you have any "\
@@ -35,11 +37,11 @@ bool Enter::LoadStudent(){
 			continue;
 		}
 		int numb;
-		string name;
+		string name, pw;
 		bool sex, type;
 		float math, chin, engl, geog, hist, biol, phys, chem;
 		is >> numb >> name >> sex >> type >> math >> chin >> \
-			  engl >> geog >> hist >> biol >> phys >> chem;
+			  engl >> geog >> hist >> biol >> phys >> chem >> pw;
 		if(type == 0){
 			ScienceStudent* psci = new ScienceStudent;
 			psci->numb = numb;
@@ -52,6 +54,7 @@ bool Enter::LoadStudent(){
 			psci->biol = biol;
 			psci->phys = phys;
 			psci->chem = chem;
+			psci->pw = pw;
 			student_list.push_back(psci);
 		}
 		else{
@@ -65,6 +68,7 @@ bool Enter::LoadStudent(){
 			part->engl = engl;
 			part->geog = geog;
 			part->hist = hist;
+			part->pw = pw;
 			student_list.push_back(part);
 		}
 	}
@@ -108,18 +112,26 @@ Person* Enter::IsPersonExist(const int num){
 		if((*it_student)->numb == num){
 			return *it_student;
 		}
-		it++;
+		it_student++;
 	}
 	return nullptr;
 }
 
+// 1. clear screen
+// 2. get into a loop, this loop can login for many times, until 
+// 		entered a '#'
+// 3. 
 bool Enter::LoginHelper(){
 	cout << "Please enter your number: " << endl;
 	int num;
 	string passwd;
 	cin >> num;
-	cin.clear();
-	cin.ignore(10000, '\n');
+	if(cin.fail()){
+		cout << "Please enter a number rather than a string." << endl;
+		cin.clear();
+		cin.ignore(10000, '\n');
+		return false;
+	}
 	Person* p = IsPersonExist(num);
 	if(p){
 		cout << "Please enter your password: " << endl;
@@ -149,10 +161,19 @@ bool Enter::Login(){
 		success = LoginHelper();
 		if(success)
 			break;
-		cout << "[# to EXIT / otherwise TRY AGIAN]: ";
-		cin >> quit;
+		else{
+			cout << "[# to EXIT / anyother key to continue trying]: ";
+			cin.ignore(99999, '\n');
+			quit = cin.get(); // >> quit;
+		}
 		if(quit == '#')
 			break;
+	}
+	if(success){
+		cout << "Login successful!" << endl;
+	}
+	else{
+		cout << "Login fail!" << endl;
 	}
 	cout << "Press any key to continue: " ;
 	cin.ignore();
@@ -160,11 +181,16 @@ bool Enter::Login(){
 	return success;
 }
 
+bool Enter::Logout(){
+	cout << "Thanks for using, see you!" <<endl;
+	return true;
+
+}
 void Enter::Run(){
 	LoadStudent();
 	LoadTeacher();
 	Login();
-	if(current_person->prio == 1){
+	if(current_person->prio == 0 || current_person->prio == 1){
 		Admin* admin = (Admin*)current_person;
 		admin->Run();
 	}
@@ -176,6 +202,9 @@ void Enter::Run(){
 		Student* student = (Student*)current_person;
 		student->Run();
 	}
+	SaveStudent();
+	SaveTeacher();
+
 }
 
 
@@ -203,7 +232,7 @@ bool Enter::SaveStudent(){
 	ofstream ofs("data/student.dat");
 	if(!ofs) return -2;
 	ofs << "Number\tName\tGender\tType\tMath\tChinese\tEnglish\t\
-Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
+Geog\tHistory\tBiology\tPhysics\tChemics\tPw" << endl;
 	list<Student*>::iterator it = student_list.begin();
 	while(it != student_list.end()){
 		Student* p1 = *it;
@@ -213,7 +242,7 @@ Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 			   	<< "\t" << p->type << "\t" << p->math << "\t" 
 				<< p->chin << "\t" << p->engl << "\t" << 0 << "\t" 
 				<< 0 << "\t"<< p->biol << "\t" << p->phys << "\t" 
-			   	<< p->chem << endl;
+			   	<< p->chem << "\t" << p->pw << endl;
 		}
 		else{
 			ArtsStudent* p = (ArtsStudent*)p1;
@@ -221,15 +250,11 @@ Geog\tHistory\tBiology\tPhysics\tChemics" << endl;
 				<< "\t" << p->type << "\t" << p->math << "\t" 
 				<< p->chin << "\t" << p->engl << "\t" << p->geog 
 				<< "\t" << p->hist << "\t" << 0 << "\t" << 0 
-				<< "\t"  << 0 << endl;
+				<< "\t"  << 0 << "\t" << p->pw << endl;
 		}
 		it++;
 	}
 	ofs.close();
-	return true;
-}
-
-bool Enter::Logout(){
 	return true;
 }
 
@@ -238,8 +263,6 @@ int main(){
 	Enter enter;
 	enter.Welcome();
 	enter.Run();
-	//enter.Logout();
-	enter.SaveStudent();
-	enter.SaveTeacher();
+	enter.Logout();
 	return 0;
 }

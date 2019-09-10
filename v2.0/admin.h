@@ -7,7 +7,7 @@
 
 class Admin: public Person{
 public:
-	Admin();
+	Admin(){};
 	~Admin();
 
 	void Run();
@@ -16,11 +16,11 @@ public:
 	int TestAdminMenu();
 	bool LoadTeacher();
 	bool SaveTeacher();
-	bool Login();
+	// bool Login();
 private:
-	std::list<Teacher*> teacher_list;
-	
-	bool LoginHelper();
+	// std::list<Teacher*> teacher_list;
+	// bool LoginHelper();
+	//
 	bool Logout();
 	
 	void InputTeacher();

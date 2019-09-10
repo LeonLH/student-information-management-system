@@ -1,7 +1,12 @@
 #include"student.h"
 #include<iostream>
 #include<string>
+#include"mytools/normal_tools.h"
 using namespace std;
+
+extern Person* current_person;
+extern NormalTools tools;
+static Student* current_student;
 void Student::Print(){
 	string type, gender;
 	if(this->type == 0)
@@ -47,14 +52,31 @@ float ScienceStudent::AverageScore() const{
 }
 
 void Student::Run(){
-	Menu();
-//	while(Menu())		TBD
-//		;
+	current_student = (Student*) current_person;
+	while(Menu())
+		;
 }
 int Student::Menu(){
-	this->Print();
+	tools.ClearScreen();
+	// print current student.
 
-	return 0;
+	cout << "ChangePassword, \ttype 1" << endl;
+	cout << "Logout, \t\ttype 2" << endl;	
+	cout << "QUIT, \t\t\ttype 0" << endl;
+	
+	int i;
+	cin >> i;
+	switch(i){
+		case 1:
+			ChangePassword();
+			break;
+		case 2:
+			Logout();
+			break;
+		case 0:
+			break;
+	}
+	return i;
 }
 
 Student* Student::Input(){
